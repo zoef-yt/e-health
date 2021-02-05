@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "258660181852",
+    "project_id": "ehealthmain",
+    "storage_bucket": "ehealthmain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258660181852:android:b83f98f86bdacf01c78399",
+        "android_client_info": {
+          "package_name": "com.zoef.e_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258660181852-9v5eg3b51r0l17ltgjmnvoe7pjptd28h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr-_gMrRRehglJ88i_Xei6dSh2g8yOaBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258660181852-9v5eg3b51r0l17ltgjmnvoe7pjptd28h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
