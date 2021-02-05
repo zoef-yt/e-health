@@ -41,7 +41,7 @@ class _registrationScreenState extends State<registrationScreen> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          "REGISTRATION SCREEN ",
+                          "USER DETAILS ",
                           style: TextStyle(
                               color: KwidgetColor,
                               fontFamily: "WorkSans",
@@ -134,30 +134,6 @@ class _registrationScreenState extends State<registrationScreen> {
                       ),
                     ],
                   ),
-                  descWidget(
-                    Texts: "ENTER YOUR GOAL",
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, left: 8, right: 8),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: KBackGroundColor,
-                        fontFamily: "WorkSans",
-                      ),
-                      onChanged: (value) {
-                        tempGoal = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your Goal in kg',
-                        hintStyle: TextStyle(
-                          color: KwidgetColor,
-                          fontFamily: "WorkSans",
-                        ),
-                      ),
-                    ),
-                  ),
                   Spacer(),
                   Flexible(
                     child: Align(
@@ -173,19 +149,14 @@ class _registrationScreenState extends State<registrationScreen> {
                               setState(() {
                                 if (tempName != null &&
                                     tempWeight != null &&
-                                    tempHeight != null &&
-                                    tempGoal != null) {
+                                    tempHeight != null) {
                                   isUserRegister = true;
                                   userName = tempName;
                                   weight = tempWeight;
                                   height = tempHeight;
-                                  goalWeight = tempGoal;
                                   bmi = getBMI(double.parse(tempHeight),
                                       double.parse(tempWeight));
-
-                                  Navigator.pop(
-                                    context,
-                                  );
+                                  Navigator.pushNamed(context, MainHomePage.id);
                                 }
                               });
                             },

@@ -75,7 +75,6 @@ class _goalScreenState extends State<goalScreen> {
                         onPressed: () {
                           setState(() {
                             if (tempWeight != null) {
-                              goalWeight = tempWeight;
                               Navigator.pop(
                                 context,
                               );

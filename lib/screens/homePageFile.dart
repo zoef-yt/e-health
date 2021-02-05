@@ -8,11 +8,12 @@ import 'package:e_health/screens/YourWeightScreen.dart';
 import 'package:e_health/screens/GoalScreen.dart';
 import 'package:e_health/screens/DietPlanScreen.dart';
 import 'package:e_health/screens/ExercisePlanScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 String userName = "New User";
 String height;
 String weight;
-String goalWeight;
 String bmi;
 String bmiMessage;
 Color bmiColor;
@@ -21,6 +22,12 @@ int caloriesBurned = 0;
 bool isUserRegister = false;
 
 class MainHomePage extends StatefulWidget {
+  final _auth = FirebaseAuth.instance;
+
+  getCurrentUser() async {
+    final user = await _auth.currentUser;
+  }
+
   static String id = "MainHomePage";
   @override
   _MainHomePageState createState() => _MainHomePageState();
@@ -119,8 +126,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         ),
                         Expanded(
                           child: WidgetPlacer(
-                            FirstTxt:
-                                isUserRegister ? "$goalWeight kg" : "Register",
+                            FirstTxt: isUserRegister ? " kg" : "Register",
                             SecondTxt: "Your Goal",
                             function: () {
                               Navigator.pushNamed(
