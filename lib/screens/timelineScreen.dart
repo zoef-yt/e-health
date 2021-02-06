@@ -29,7 +29,7 @@ class _goalScreenState extends State<goalScreen> {
             children: [
               Center(
                 child: Text(
-                  "SET YOUR WEIGHT GOAL",
+                  "Timeline",
                   style: TextStyle(
                       color: KwidgetColor,
                       fontFamily: "WorkSans",

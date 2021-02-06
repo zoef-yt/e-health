@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:e_health/screens/homePageFile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExercisePage extends StatelessWidget {
   static String id = "exercisePlan";
@@ -64,6 +66,28 @@ List<int> kcalPerWorkout = [
 String textField;
 
 class _exercisePlanScreenState extends State<exercisePlanScreen> {
+  int caloriesBurned = 0;
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    getUserInfo();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<String> getUserInfo() async {
+    final info =
+        await firestoreInstance.collection("users").doc(_auth.uid).get();
+    caloriesBurned = await info.data()[getCurrentDate()]['youBurned'];
+    print("done");
+    onGoBack();
+  }
+
+  onGoBack() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +187,41 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
                     }
                   });
                 },
-              )
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    elevation: 5.0,
+                    color: KBackGroundColor,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: MaterialButton(
+                      onPressed: () {
+                        firestoreInstance
+                            .collection("users")
+                            .doc(_auth.uid)
+                            .set({
+                          getCurrentDate(): {
+                            "youBurned": caloriesBurned,
+                          }
+                        }, SetOptions(merge: true));
+                        Navigator.pop(context);
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: Text(
+                        "DONE",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "WorkSans",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

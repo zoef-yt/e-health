@@ -27,6 +27,7 @@ var breakfast = {
 String textField;
 
 class _dietPlanState extends State<dietPlan> {
+  int yourIntake = 0;
   String bmi;
   final _auth = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
@@ -41,6 +42,7 @@ class _dietPlanState extends State<dietPlan> {
     final info =
         await firestoreInstance.collection("users").doc(_auth.uid).get();
     bmi = await info.data()['BMI'];
+    yourIntake = await info.data()[getCurrentDate()]['yourIntake'];
     print("done");
     onGoBack();
   }
@@ -522,6 +524,40 @@ class _dietPlanState extends State<dietPlan> {
                     }
                   });
                 },
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    elevation: 5.0,
+                    color: KBackGroundColor,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: MaterialButton(
+                      onPressed: () {
+                        firestoreInstance
+                            .collection("users")
+                            .doc(_auth.uid)
+                            .set({
+                          getCurrentDate(): {
+                            "yourIntake": yourIntake,
+                          }
+                        }, SetOptions(merge: true));
+                        Navigator.pop(context);
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: Text(
+                        "DONE",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "WorkSans",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

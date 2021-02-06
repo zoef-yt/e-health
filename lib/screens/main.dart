@@ -6,7 +6,7 @@ import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/screens/RegistrationScreen.dart';
 import 'package:e_health/Screens/BMIScreen.dart';
 import 'package:e_health/screens/YourWeightScreen.dart';
-import 'package:e_health/screens/GoalScreen.dart';
+import 'package:e_health/screens/timelineScreen.dart';
 import 'package:e_health/screens/DietPlanScreen.dart';
 import 'package:e_health/screens/ExercisePlanScreen.dart';
 import 'welcomeScreen.dart';
@@ -22,10 +22,8 @@ void main() async {
 
 String getScreen() {
   if (FirebaseAuth.instance.currentUser != null) {
-    print("user is here ${FirebaseAuth.instance.currentUser}");
     return MainHomePage.id;
   } else {
-    print("not");
     return WelcomeScreen.id;
   }
 }
