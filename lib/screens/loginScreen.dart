@@ -134,10 +134,16 @@ class _loginScreenState extends State<loginScreen> {
                                     await _auth.signInWithEmailAndPassword(
                                         email: email, password: password);
                                 if (user != null) {
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
                                   Navigator.pushNamed(context, MainHomePage.id);
                                 }
                               } catch (e) {
                                 showMyDialog(context, e);
+                                setState(() {
+                                  showSpinner = false;
+                                });
                               }
                             } else {
                               showMyDialog(context,

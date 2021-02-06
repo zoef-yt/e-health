@@ -3,6 +3,8 @@ import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/methods/methods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistrationScreen extends StatelessWidget {
   static String id = "registrationScreen";
@@ -20,10 +22,12 @@ class registrationScreen extends StatefulWidget {
 
 // ignore: camel_case_types
 class _registrationScreenState extends State<registrationScreen> {
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   String tempName;
   String tempWeight;
   String tempHeight;
-  String tempGoal;
+  String tempBmi;
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -150,12 +154,22 @@ class _registrationScreenState extends State<registrationScreen> {
                                 if (tempName != null &&
                                     tempWeight != null &&
                                     tempHeight != null) {
-                                  isUserRegister = true;
-                                  userName = tempName;
-                                  weight = tempWeight;
-                                  height = tempHeight;
-                                  bmi = getBMI(double.parse(tempHeight),
+                                  // isUserRegister = true;
+                                  // userName = tempName;
+                                  // weight = tempWeight;
+                                  // height = tempHeight;
+                                  tempBmi = getBMI(double.parse(tempHeight),
                                       double.parse(tempWeight));
+
+                                  firestoreInstance
+                                      .collection("users")
+                                      .doc(_auth.uid)
+                                      .set({
+                                    "Name": tempName,
+                                    "Weight": tempWeight,
+                                    "Height": tempHeight,
+                                    "BMI": tempBmi
+                                  }, SetOptions(merge: true));
                                   Navigator.pushNamed(context, MainHomePage.id);
                                 }
                               });

@@ -115,42 +115,51 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
                   ),
                 ),
                 Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
-                  child: InkWell(
-                    onTap: () async {
-                      if (email != null && password != null) {
-                        try {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          final newUser =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                          if (newUser != null) {
-                            Navigator.pushNamed(context, RegistrationScreen.id);
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
+                    child: InkWell(
+                      onTap: () async {
+                        if (email != null && password != null) {
+                          try {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: email, password: password);
+                            if (newUser != null) {
+                              setState(() {
+                                showSpinner = false;
+                              });
+                              Navigator.pushNamed(
+                                  context, RegistrationScreen.id);
+                            }
+                          } catch (e) {
+                            print(e);
+                            showMyDialog(context, e);
+                            setState(() {
+                              showSpinner = false;
+                            });
                           }
-                        } catch (e) {
-                          print(e);
-                          showMyDialog(context, e);
+                        } else {
+                          showMyDialog(
+                              context, "Email and password cannot be empty");
                         }
-                      } else {
-                        showMyDialog(
-                            context, "Email and password cannot be empty");
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: widgetBoxDec,
-                        child: Text(
-                          "Register",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 50,
-                              color: KContainerColour,
-                              fontFamily: "WorkSans",
-                              fontWeight: FontWeight.bold),
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: widgetBoxDec,
+                          child: Text(
+                            "Register",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 50,
+                                color: KContainerColour,
+                                fontFamily: "WorkSans",
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
-import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/methods/methods.dart';
+import 'homePageFile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class YourWeightScreen extends StatelessWidget {
   static String id = "yourWeightScreen";
@@ -18,6 +20,9 @@ class yourWeightScreen extends StatefulWidget {
 }
 
 class _yourWeightScreenState extends State<yourWeightScreen> {
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  String tempBmi;
   String tempWeight;
   @override
   Widget build(BuildContext context) {
@@ -74,10 +79,16 @@ class _yourWeightScreenState extends State<yourWeightScreen> {
                       child: MaterialButton(
                         onPressed: () {
                           setState(() {
+                            tempBmi = getBMI(
+                                double.parse(height), double.parse(tempWeight));
                             if (tempWeight != null) {
-                              weight = tempWeight;
-                              bmi = getBMI(double.parse(height),
-                                  double.parse(tempWeight));
+                              firestoreInstance
+                                  .collection("users")
+                                  .doc(_auth.uid)
+                                  .set({"Weight": tempWeight, "BMI": tempBmi},
+                                      SetOptions(merge: true));
+
+                              // weight = tempWeight;
 
                               Navigator.pop(
                                 context,

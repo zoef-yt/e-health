@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/methods/mealNameWithKcal.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DietPlan extends StatelessWidget {
   static String id = "dietPlan";
@@ -25,6 +27,28 @@ var breakfast = {
 String textField;
 
 class _dietPlanState extends State<dietPlan> {
+  String bmi;
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    getUserInfo();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<String> getUserInfo() async {
+    final info =
+        await firestoreInstance.collection("users").doc(_auth.uid).get();
+    bmi = await info.data()['BMI'];
+    print("done");
+    onGoBack();
+  }
+
+  onGoBack() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

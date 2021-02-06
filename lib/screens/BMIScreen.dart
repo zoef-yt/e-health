@@ -3,6 +3,8 @@ import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/methods/methods.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BMIScreen extends StatelessWidget {
   static String id = "BmiScreen";
@@ -18,6 +20,10 @@ class bmiScreen extends StatefulWidget {
 }
 
 class _bmiScreenState extends State<bmiScreen> {
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+
+  String bmi;
   String tempWeight;
   String tempHeight;
   @override
@@ -112,10 +118,18 @@ class _bmiScreenState extends State<bmiScreen> {
                           onPressed: () {
                             setState(() {
                               if (tempWeight != null && tempHeight != null) {
-                                weight = tempWeight;
+                                tempWeight;
                                 height = tempHeight;
                                 bmi = getBMI(double.parse(tempHeight),
                                     double.parse(tempWeight));
+                                firestoreInstance
+                                    .collection("users")
+                                    .doc(_auth.uid)
+                                    .set({
+                                  "Weight": tempWeight,
+                                  "Height": tempHeight,
+                                  "BMI": bmi
+                                }, SetOptions(merge: true));
 
                                 Navigator.pop(
                                   context,

@@ -1,3 +1,4 @@
+import 'package:e_health/methods/methods.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
@@ -8,25 +9,17 @@ import 'package:e_health/screens/YourWeightScreen.dart';
 import 'package:e_health/screens/GoalScreen.dart';
 import 'package:e_health/screens/DietPlanScreen.dart';
 import 'package:e_health/screens/ExercisePlanScreen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-String userName = "New User";
-String height;
-String weight;
-String bmi;
-String bmiMessage;
-Color bmiColor;
 int yourIntake = 0;
 int caloriesBurned = 0;
 bool isUserRegister = false;
+Color bmiColor;
+String height;
 
 class MainHomePage extends StatefulWidget {
   final _auth = FirebaseAuth.instance;
-
-  getCurrentUser() async {
-    final user = await _auth.currentUser;
-  }
 
   static String id = "MainHomePage";
   @override
@@ -34,12 +27,37 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
+  String userName = "New User";
+  String weight;
+  String bmi;
+  final _auth = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  var path;
   @override
-  void getValue() {
-    setState(() {});
+  void initState() {
+    getUserInfo();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<String> getUserInfo() async {
+    final info =
+        await firestoreInstance.collection("users").doc(_auth.uid).get();
+    userName = await info.data()['Name'];
+    weight = await info.data()['Weight'];
+    height = await info.data()['Height'];
+    bmi = await info.data()['BMI'];
+    print("done");
+    onStart();
   }
 
   onGoBack() {
+    setState(() {
+      getUserInfo();
+    });
+  }
+
+  onStart() {
     setState(() {});
   }
 
@@ -86,13 +104,17 @@ class _MainHomePageState extends State<MainHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: WidgetPlacer(
-                      FirstTxt: bmi != null ? bmi : "Register",
-                      SecondTxt: bmiMessage != null ? bmiMessage : "YOUR BMI",
+                      // FirstTxt: bmi != null ? bmi : "Register",
+                      FirstTxt: bmi,
+                      SecondTxt: bmi != null
+                          ? getBmiMessage(
+                              double.parse(height), double.parse(weight))
+                          : "YOUR BMI",
                       colors: bmiColor,
                       function: () {
                         Navigator.pushNamed(
                                 context,
-                                isUserRegister
+                                bmi != null
                                     ? BMIScreen.id
                                     : RegistrationScreen.id)
                             .then((value) => onGoBack());
@@ -109,12 +131,13 @@ class _MainHomePageState extends State<MainHomePage> {
                         Expanded(
                           child: WidgetPlacer(
                             FirstTxt:
-                                isUserRegister ? "$weight kg" : "Register",
+                                // isUserRegister ? "$weight kg" : "Register",
+                                "$weight kg",
                             SecondTxt: "Your Weight",
                             function: () {
                               Navigator.pushNamed(
                                       context,
-                                      isUserRegister
+                                      weight != null
                                           ? YourWeightScreen.id
                                           : RegistrationScreen.id)
                                   .then((value) => onGoBack());
@@ -126,8 +149,8 @@ class _MainHomePageState extends State<MainHomePage> {
                         ),
                         Expanded(
                           child: WidgetPlacer(
-                            FirstTxt: isUserRegister ? " kg" : "Register",
-                            SecondTxt: "Your Goal",
+                            FirstTxt: "Trendz",
+                            SecondTxt: "Your Info",
                             function: () {
                               Navigator.pushNamed(
                                       context,

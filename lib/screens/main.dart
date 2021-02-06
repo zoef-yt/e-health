@@ -14,9 +14,20 @@ import 'userRegistrationScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
+}
+
+String getScreen() {
+  if (FirebaseAuth.instance.currentUser != null) {
+    print("user is here ${FirebaseAuth.instance.currentUser}");
+    return MainHomePage.id;
+  } else {
+    print("not");
+    return WelcomeScreen.id;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -40,8 +51,10 @@ class MyApp extends StatelessWidget {
                 accentColor: KwidgetColor,
                 scaffoldBackgroundColor: KBackGroundColor,
               ),
-              home: welcomeScreen(),
-              initialRoute: WelcomeScreen.id,
+              home: FirebaseAuth.instance.currentUser == null
+                  ? WelcomeScreen()
+                  : MainHomePage(),
+              initialRoute: getScreen(),
               routes: {
                 MainHomePage.id: (context) => MainHomePage(),
                 WelcomeScreen.id: (context) => WelcomeScreen(),
@@ -59,7 +72,7 @@ class MyApp extends StatelessWidget {
           }
 
           return MaterialApp(
-            home: Text("loading"),
+            home: Center(child: Text("loading")),
           );
         });
   }
