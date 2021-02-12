@@ -126,9 +126,17 @@ class _bmiScreenState extends State<bmiScreen> {
                                     .collection("users")
                                     .doc(_auth.uid)
                                     .set({
-                                  "Weight": tempWeight,
                                   "Height": tempHeight,
-                                  "BMI": bmi
+                                  "BMI": bmi,
+                                  "Weight": tempWeight,
+                                  'date': {
+                                    getCurrentDate(): {
+                                      "data": {
+                                        "BMI": bmi,
+                                        "Weight": tempWeight,
+                                      },
+                                    },
+                                  }
                                 }, SetOptions(merge: true));
 
                                 Navigator.pop(

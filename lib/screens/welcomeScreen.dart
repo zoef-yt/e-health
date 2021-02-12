@@ -82,8 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         onTap: () {
                           Navigator.pushNamed(context, loginScreen.id);
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: Expanded(
                           child: Text(
                             "Login",
                             textAlign: TextAlign.center,

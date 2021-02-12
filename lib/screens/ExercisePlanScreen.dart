@@ -4,6 +4,7 @@ import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:e_health/screens/homePageFile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class ExercisePage extends StatelessWidget {
   static String id = "exercisePlan";
@@ -72,6 +73,7 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
   @override
   void initState() {
     getUserInfo();
+    getUserInfo2();
     // TODO: implement initState
     super.initState();
   }
@@ -79,9 +81,16 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
   Future<String> getUserInfo() async {
     final info =
         await firestoreInstance.collection("users").doc(_auth.uid).get();
-    caloriesBurned = await info.data()[getCurrentDate()]['youBurned'];
+    // caloriesBurned =
+    //     await info.data()['date'][getCurrentDate()]['data']['youBurned'];
     print("done");
-    onGoBack();
+  }
+
+  Future<String> getUserInfo2() async {
+    final info =
+        await firestoreInstance.collection("users").doc(_auth.uid).get();
+    caloriesBurned =
+        await info.data()['date'][getCurrentDate()]['data']['youBurned'];
   }
 
   onGoBack() {
@@ -90,142 +99,172 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: backgroundCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Center(
-                child: Text(
-                  "EXERCISE PLAN",
-                  style: TextStyle(
-                      color: KwidgetColor,
-                      fontFamily: "WorkSans",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30),
-                ),
-              ),
-              Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    caloriesBurned >= 1
-                        ? "Today you lost ${caloriesBurned}🔥"
-                        : "Start Workout",
-                    style: TextStyle(
-                        color: KwidgetColor,
-                        fontFamily: "WorkSans",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFFf5f4f4),
-                    ),
-                    child: ListView.builder(
-                      itemCount: workoutName.length,
-                      itemBuilder: (BuildContext context, int position) {
-                        return exerciseWidget(
-                          workoutName: workoutName[position],
-                          kcal: kcalPerWorkout[position],
-                          minusFunction: () {
-                            setState(
-                              () {
-                                if (caloriesBurned - kcalPerWorkout[position] >
-                                    0) {
-                                  caloriesBurned =
-                                      caloriesBurned - kcalPerWorkout[position];
-                                }
-                              },
-                            );
-                          },
-                          addFunction: () {
-                            setState(
-                              () {
-                                caloriesBurned =
-                                    caloriesBurned + kcalPerWorkout[position];
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    // child: ListView.builder(
-                    //     itemCount: testMap.length,
-                    //     itemBuilder: (BuildContext context, int pos) {
-                    //       return exerciseWidget(
-                    //           workoutName: testMap.keys.toString());
-                    //     }),
-                  ),
-                ),
-              ),
-              BottomWidgetPlacer(
-                firstText: "Physically Active",
-                secondText: "In Minutes",
-                onChangeFunction: (String value) {
-                  textField = value;
-                },
-                minusOnPress: () {
-                  setState(() {
-                    if (caloriesBurned - int.parse(textField) > 0 &&
-                        textField != null) {
-                      caloriesBurned -= int.parse(textField);
-                    }
-                  });
-                },
-                addOnPress: () {
-                  setState(() {
-                    if (textField != null) {
-                      caloriesBurned += int.parse(textField);
-                    }
-                  });
-                },
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    elevation: 5.0,
-                    color: KBackGroundColor,
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: MaterialButton(
-                      onPressed: () {
-                        firestoreInstance
-                            .collection("users")
-                            .doc(_auth.uid)
-                            .set({
-                          getCurrentDate(): {
-                            "youBurned": caloriesBurned,
-                          }
-                        }, SetOptions(merge: true));
-                        Navigator.pop(context);
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: Text(
-                        "DONE",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "WorkSans",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+    return FutureBuilder(
+        future: getUserInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return MaterialApp(home: Text("${snapshot.error}"));
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+              body: SafeArea(
+                child: backgroundCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Center(
+                        child: Text(
+                          "EXERCISE PLAN",
+                          style: TextStyle(
+                              color: KwidgetColor,
+                              fontFamily: "WorkSans",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30),
+                        ),
                       ),
-                    ),
+                      Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            caloriesBurned >= 1
+                                ? "Today you lost ${caloriesBurned}🔥"
+                                : "Start Workout",
+                            style: TextStyle(
+                                color: KwidgetColor,
+                                fontFamily: "WorkSans",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFFf5f4f4),
+                            ),
+                            child: ListView.builder(
+                              itemCount: workoutName.length,
+                              itemBuilder:
+                                  (BuildContext context, int position) {
+                                return exerciseWidget(
+                                  workoutName: workoutName[position],
+                                  kcal: kcalPerWorkout[position],
+                                  minusFunction: () {
+                                    setState(
+                                      () {
+                                        if (caloriesBurned -
+                                                kcalPerWorkout[position] >
+                                            0) {
+                                          caloriesBurned = caloriesBurned -
+                                              kcalPerWorkout[position];
+                                        }
+                                      },
+                                    );
+                                  },
+                                  addFunction: () {
+                                    setState(
+                                      () {
+                                        caloriesBurned = caloriesBurned +
+                                            kcalPerWorkout[position];
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+// child: ListView.builder(
+//     itemCount: testMap.length,
+//     itemBuilder: (BuildContext context, int pos) {
+//       return exerciseWidget(
+//           workoutName: testMap.keys.toString());
+//     }),
+                          ),
+                        ),
+                      ),
+                      BottomWidgetPlacer(
+                        firstText: "Physically Active",
+                        secondText: "In Minutes",
+                        onChangeFunction: (String value) {
+                          textField = value;
+                        },
+                        minusOnPress: () {
+                          setState(() {
+                            if (caloriesBurned - int.parse(textField) > 0 &&
+                                textField != null) {
+                              caloriesBurned -= int.parse(textField);
+                            }
+                          });
+                        },
+                        addOnPress: () {
+                          setState(() {
+                            if (textField != null) {
+                              caloriesBurned += int.parse(textField);
+                            }
+                          });
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Material(
+                            elevation: 5.0,
+                            color: KBackGroundColor,
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                firestoreInstance
+                                    .collection("users")
+                                    .doc(_auth.uid)
+                                    .set({
+                                  'date': {
+                                    getCurrentDate(): {
+                                      'data': {
+                                        "youBurned": caloriesBurned,
+                                      }
+                                    }
+                                  }
+                                }, SetOptions(merge: true));
+                                Navigator.pop(context);
+                              },
+                              minWidth: 200.0,
+                              height: 42.0,
+                              child: Text(
+                                "DONE",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "WorkSans",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          }
+          return Scaffold(
+            body: SafeArea(
+              child: backgroundCard(
+                child: ModalProgressHUD(
+                  inAsyncCall: true,
+                  color: KwidgetColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
+
+//

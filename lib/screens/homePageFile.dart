@@ -10,6 +10,8 @@ import 'package:e_health/screens/DietPlanScreen.dart';
 import 'package:e_health/screens/ExercisePlanScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'timelineScreen.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 Color bmiColor;
 String height;
@@ -37,6 +39,25 @@ class _MainHomePageState extends State<MainHomePage> {
   Future<String> getUserInfo() async {
     final info =
         await firestoreInstance.collection("users").doc(_auth.uid).get();
+    if (!await info.data()['date'].containsKey(getCurrentDate())) {
+      print(await info.data()['date'].keys);
+      print("(${getCurrentDate()})");
+      firestoreInstance.collection("users").doc(_auth.uid).set(
+        {
+          'date': {
+            getCurrentDate(): {
+              "data": {
+                "BMI": await info.data()['BMI'],
+                "Weight": await info.data()['Weight'],
+                "yourIntake": 0,
+                "youBurned": 0,
+              },
+            },
+          }
+        },
+        SetOptions(merge: true),
+      );
+    }
     userName = await info.data()['Name'];
     weight = await info.data()['Weight'];
     height = await info.data()['Height'];
@@ -49,17 +70,13 @@ class _MainHomePageState extends State<MainHomePage> {
     });
   }
 
-  onStart() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: getUserInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return MaterialApp(home: Text("${snapshot.error}"));
+            return MaterialApp(home: Center(child: Text("${snapshot.error}")));
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
@@ -153,12 +170,9 @@ class _MainHomePageState extends State<MainHomePage> {
                                     FirstTxt: "Trendz",
                                     SecondTxt: "Your Info",
                                     function: () {
-                                      // Navigator.pushNamed(
-                                      //         context,
-                                      //         isUserRegister
-                                      //             ? GoalScreen.id
-                                      //             : RegistrationScreen.id)
-                                      //     .then((value) => onGoBack());
+                                      Navigator.pushNamed(
+                                              context, timeLineScreen.id)
+                                          .then((value) => onGoBack());
                                     },
                                   ),
                                 ),
@@ -224,8 +238,18 @@ class _MainHomePageState extends State<MainHomePage> {
               ),
             );
           }
-          return MaterialApp(
-            home: Center(child: Text("loading")),
+          return Scaffold(
+            body: SafeArea(
+              child: backgroundCard(
+                child: ModalProgressHUD(
+                  inAsyncCall: true,
+                  color: KwidgetColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  ),
+                ),
+              ),
+            ),
           );
         });
   }

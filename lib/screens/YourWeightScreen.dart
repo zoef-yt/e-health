@@ -85,8 +85,21 @@ class _yourWeightScreenState extends State<yourWeightScreen> {
                               firestoreInstance
                                   .collection("users")
                                   .doc(_auth.uid)
-                                  .set({"Weight": tempWeight, "BMI": tempBmi},
-                                      SetOptions(merge: true));
+                                  .set(
+                                {
+                                  "BMI": tempBmi,
+                                  "Weight": tempWeight,
+                                  'date': {
+                                    getCurrentDate(): {
+                                      "data": {
+                                        "BMI": tempBmi,
+                                        "Weight": tempWeight,
+                                      },
+                                    },
+                                  },
+                                },
+                                SetOptions(merge: true),
+                              );
 
                               // weight = tempWeight;
 
