@@ -9,10 +9,11 @@ import 'package:e_health/screens/YourWeightScreen.dart';
 import 'package:e_health/screens/timelineScreen.dart';
 import 'package:e_health/screens/DietPlanScreen.dart';
 import 'package:e_health/screens/ExercisePlanScreen.dart';
-import 'welcomeScreen.dart';
-import 'userRegistrationScreen.dart';
+import 'screens/welcomeScreen.dart';
+import 'screens/userRegistrationScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'screens/settingPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
                 loginScreen.id: (context) => loginScreen(),
                 userRegistrationScreen.id: (context) =>
                     userRegistrationScreen(),
+                settingPage.id: (context) => settingPage()
               },
             );
           }

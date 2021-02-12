@@ -12,6 +12,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'timelineScreen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'settingPage.dart';
 
 Color bmiColor;
 String height;
@@ -80,6 +82,34 @@ class _MainHomePageState extends State<MainHomePage> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
+              bottomNavigationBar: CurvedNavigationBar(
+                backgroundColor: KBackGroundColor,
+                animationDuration: Duration(milliseconds: 400),
+                animationCurve: Curves.fastOutSlowIn,
+                index: 1,
+                height: 60,
+                onTap: (index) {
+                  if (index == 0) {
+                    Future.delayed(Duration(milliseconds: 250), () {
+                      Navigator.pushNamed(context, settingPage.id)
+                          .then((value) => onGoBack());
+                    });
+                  }
+                  if (index == 1) {}
+                  if (index == 2) {
+                    Future.delayed(Duration(milliseconds: 250), () {
+                      Navigator.of(context)
+                          .pushNamed(timeLineScreen.id)
+                          .then((value) => onGoBack());
+                    });
+                  }
+                },
+                items: <Widget>[
+                  Icon(Icons.face_rounded, size: 30, color: KwidgetColor),
+                  Icon(Icons.home_rounded, size: 30, color: KwidgetColor),
+                  Icon(Icons.calendar_today, size: 30, color: KwidgetColor),
+                ],
+              ),
               body: SafeArea(
                 child: Padding(
                   padding:
@@ -162,20 +192,20 @@ class _MainHomePageState extends State<MainHomePage> {
                                     },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: WidgetPlacer(
-                                    FirstTxt: "Trendz",
-                                    SecondTxt: "Your Info",
-                                    function: () {
-                                      Navigator.pushNamed(
-                                              context, timeLineScreen.id)
-                                          .then((value) => onGoBack());
-                                    },
-                                  ),
-                                ),
+                                // SizedBox(
+                                //   width: 10,
+                                // ),
+                                // Expanded(
+                                //   child: WidgetPlacer(
+                                //     FirstTxt: "Trendz",
+                                //     SecondTxt: "Your Info",
+                                //     function: () {
+                                //       Navigator.pushNamed(
+                                //               context, timeLineScreen.id)
+                                //           .then((value) => onGoBack());
+                                //     },
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

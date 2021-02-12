@@ -1,10 +1,13 @@
+import 'package:e_health/screens/settingPage.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_health/screens/homePageFile.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'dart:io';
 
 class timeLineScreen extends StatelessWidget {
@@ -90,6 +93,37 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
         }
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
+            bottomNavigationBar: CurvedNavigationBar(
+              backgroundColor: KBackGroundColor,
+              animationDuration: Duration(milliseconds: 400),
+              animationCurve: Curves.fastOutSlowIn,
+              index: 2,
+              height: 60,
+              onTap: (index) {
+                if (index == 0) {
+                  Future.delayed(Duration(milliseconds: 250), () {
+                    Navigator.pushNamed(context, settingPage.id);
+                  });
+                }
+                if (index == 1) {
+                  Future.delayed(Duration(milliseconds: 250), () {
+                    while (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                    // Navigator.popUntil(
+                    //     context, ModalRoute.withName(MainHomePage.id));
+                  });
+                }
+                if (index == 2) {
+                  print("tapped 0");
+                }
+              },
+              items: <Widget>[
+                Icon(Icons.face_rounded, size: 30, color: KwidgetColor),
+                Icon(Icons.home_rounded, size: 30, color: KwidgetColor),
+                Icon(Icons.calendar_today, size: 30, color: KwidgetColor),
+              ],
+            ),
             body: SafeArea(
               child: backgroundCard(
                 child: Column(
@@ -136,34 +170,34 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: Material(
-                          elevation: 5.0,
-                          color: KBackGroundColor,
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: MaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                Navigator.pop(context);
-                              });
-                            },
-                            minWidth: 200.0,
-                            height: 42.0,
-                            child: Text(
-                              "DONE",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "WorkSans",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomCenter,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.symmetric(vertical: 16.0),
+                    //     child: Material(
+                    //       elevation: 5.0,
+                    //       color: KBackGroundColor,
+                    //       borderRadius: BorderRadius.circular(30.0),
+                    //       child: MaterialButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             Navigator.pop(context);
+                    //           });
+                    //         },
+                    //         minWidth: 200.0,
+                    //         height: 42.0,
+                    //         child: Text(
+                    //           "DONE",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontFamily: "WorkSans",
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 20),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
