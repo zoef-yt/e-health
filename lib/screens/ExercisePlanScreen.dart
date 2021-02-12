@@ -142,9 +142,6 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFf5f4f4),
-                            ),
                             child: ListView.builder(
                               itemCount: workoutName.length,
                               itemBuilder:

@@ -114,6 +114,37 @@ class _loginScreenState extends State<loginScreen> {
                         )),
                   ),
                 ),
+                Flexible(
+                  child: InkWell(
+                    onTap: () {
+                      print("clicked");
+                      if (email == null) {
+                        showMyDialog(context, "Email Cannot Be Empty");
+                      }
+                      if (email != null) {
+                        try {
+                          _auth.sendPasswordResetEmail(email: email);
+                        } catch (e) {
+                          print(e);
+                          showMyDialog(context, e);
+                        }
+                        showMyDialog(
+                            context, "Reset Password sent on your email");
+                      }
+                    },
+                    child: Center(
+                      child: Text(
+                        "FORGOT PASSWORD? CLICK HERE!",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            color: KwidgetColor,
+                            fontFamily: "WorkSans",
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
                 Spacer(),
                 Flexible(
                   child: Padding(
