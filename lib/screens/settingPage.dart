@@ -1,3 +1,5 @@
+import 'package:e_health/screens/homePageFile.dart';
+import 'package:e_health/screens/welcomeScreen.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
@@ -55,9 +57,14 @@ class _settingPageState extends State<settingPage> {
                     Future.delayed(
                       Duration(milliseconds: 250),
                       () {
-                        while (Navigator.canPop(context)) {
-                          Navigator.pop(context);
-                        }
+                        Navigator.of(context)
+                            .pushReplacementNamed(MainHomePage.id);
+
+                        // Navigator.popUntil(
+                        //     context, ModalRoute.withName(MainHomePage.id));
+                        // while (Navigator.canPop(context)) {
+                        //   Navigator.pop(context);
+                        // }
                       },
                     );
                   }
@@ -154,6 +161,20 @@ class _settingPageState extends State<settingPage> {
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              await FirebaseAuth.instance.signOut();
+
+                              Navigator.popAndPushNamed(
+                                  context, WelcomeScreen.id);
+                            },
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: KBackGroundColor,
+                              child: Icon(Icons.logout,
+                                  size: 40, color: Colors.white),
                             ),
                           ),
                         ],

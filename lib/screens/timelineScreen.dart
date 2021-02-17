@@ -106,13 +106,13 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                   });
                 }
                 if (index == 1) {
-                  Future.delayed(Duration(milliseconds: 250), () {
-                    while (Navigator.canPop(context)) {
-                      Navigator.pop(context);
-                    }
-                    // Navigator.popUntil(
-                    //     context, ModalRoute.withName(MainHomePage.id));
-                  });
+                  Navigator.of(context).pushReplacementNamed(MainHomePage.id);
+
+                  // Future.delayed(Duration(milliseconds: 250), () {
+                  //   Navigator.popUntil(
+                  //       context, ModalRoute.withName(MainHomePage.id));
+                  // });
+                  // Navigator.pushNamed(context, MainHomePage.id);
                 }
                 if (index == 2) {
                   print("tapped 0");

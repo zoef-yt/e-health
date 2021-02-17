@@ -191,14 +191,14 @@ class _exercisePlanScreenState extends State<exercisePlanScreen> {
                           setState(() {
                             if (caloriesBurned - int.parse(textField) > 0 &&
                                 textField != null) {
-                              caloriesBurned -= int.parse(textField);
+                              caloriesBurned -= (int.parse(textField) * 10);
                             }
                           });
                         },
                         addOnPress: () {
                           setState(() {
                             if (textField != null) {
-                              caloriesBurned += int.parse(textField);
+                              caloriesBurned += (int.parse(textField) * 10);
                             }
                           });
                         },
