@@ -91,7 +91,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 onTap: (index) {
                   if (index == 0) {
                     Future.delayed(Duration(milliseconds: 250), () {
-                      Navigator.pushNamed(context, settingPage.id)
+                      Navigator.pushReplacementNamed(context, settingPage.id)
                           .then((value) => onGoBack());
                     });
                   }
@@ -99,7 +99,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   if (index == 2) {
                     Future.delayed(Duration(milliseconds: 250), () {
                       Navigator.of(context)
-                          .pushNamed(timeLineScreen.id)
+                          .pushReplacementNamed(timeLineScreen.id)
                           .then((value) => onGoBack());
                     });
                   }

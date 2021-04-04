@@ -180,7 +180,8 @@ class _registrationScreenState extends State<registrationScreen> {
                                       },
                                     }
                                   }, SetOptions(merge: true));
-                                  Navigator.pushNamed(context, MainHomePage.id);
+                                  Navigator.pushReplacementNamed(
+                                      context, MainHomePage.id);
                                 }
                               });
                             },

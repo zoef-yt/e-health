@@ -86,7 +86,7 @@ class BottomWidgetPlacer extends StatelessWidget {
       this.firstText,
       this.minusOnPress,
       this.addOnPress,
-      this.onChangeFunction});
+      this.onChangeFunction,});
   final String firstText;
   final String secondText;
   final Function minusOnPress;

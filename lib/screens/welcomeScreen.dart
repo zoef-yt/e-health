@@ -101,7 +101,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
                 child: InkWell(
                   onTap: () {
-                    print("hi");
                     Navigator.pushNamed(context, userRegistrationScreen.id);
                   },
                   child: Padding(

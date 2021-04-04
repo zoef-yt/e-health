@@ -70,7 +70,8 @@ class _settingPageState extends State<settingPage> {
                   }
                   if (index == 2) {
                     Future.delayed(Duration(milliseconds: 250), () {
-                      Navigator.of(context).pushNamed(timeLineScreen.id);
+                      Navigator.of(context)
+                          .pushReplacementNamed(timeLineScreen.id);
                     });
                   }
                 },
