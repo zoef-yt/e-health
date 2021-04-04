@@ -81,12 +81,13 @@ class descWidget extends StatelessWidget {
 //BOTTOM Widget Placer
 
 class BottomWidgetPlacer extends StatelessWidget {
-  BottomWidgetPlacer(
-      {this.secondText,
-      this.firstText,
-      this.minusOnPress,
-      this.addOnPress,
-      this.onChangeFunction,});
+  BottomWidgetPlacer({
+    this.secondText,
+    this.firstText,
+    this.minusOnPress,
+    this.addOnPress,
+    this.onChangeFunction,
+  });
   final String firstText;
   final String secondText;
   final Function minusOnPress;
