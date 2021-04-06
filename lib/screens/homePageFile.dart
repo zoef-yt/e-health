@@ -25,9 +25,7 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
-  String userName = "New User";
-  String weight;
-  String bmi;
+  String userName = "New User", weight, bmi;
   final _auth = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
   var path;
@@ -192,20 +190,6 @@ class _MainHomePageState extends State<MainHomePage> {
                                     },
                                   ),
                                 ),
-                                // SizedBox(
-                                //   width: 10,
-                                // ),
-                                // Expanded(
-                                //   child: WidgetPlacer(
-                                //     FirstTxt: "Trendz",
-                                //     SecondTxt: "Your Info",
-                                //     function: () {
-                                //       Navigator.pushNamed(
-                                //               context, timeLineScreen.id)
-                                //           .then((value) => onGoBack());
-                                //     },
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),

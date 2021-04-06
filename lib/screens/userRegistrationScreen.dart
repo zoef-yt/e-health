@@ -1,5 +1,4 @@
 import 'package:e_health/screens/RegistrationScreen.dart';
-import 'package:e_health/screens/homePageFile.dart';
 import 'package:e_health/widgetDart/widgetFile.dart';
 import 'package:e_health/methods/methods.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -83,11 +83,12 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
                       email = value;
                     },
                     decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your email',
-                        hintStyle: TextStyle(
-                          color: KwidgetColor,
-                          fontFamily: "WorkSans",
-                        )),
+                      hintText: 'Enter your email',
+                      hintStyle: TextStyle(
+                        color: KwidgetColor,
+                        fontFamily: "WorkSans",
+                      ),
+                    ),
                   ),
                 ),
                 descWidget(
@@ -107,15 +108,16 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
                       password = value;
                     },
                     decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your Password',
-                        hintStyle: TextStyle(
-                          color: KwidgetColor,
-                          fontFamily: "WorkSans",
-                        )),
+                      hintText: 'Enter your Password',
+                      hintStyle: TextStyle(
+                        color: KwidgetColor,
+                        fontFamily: "WorkSans",
+                      ),
+                    ),
                   ),
                 ),
                 Spacer(),
-                Flexible(
+                Container(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
                     child: InkWell(
@@ -132,7 +134,7 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
                               setState(() {
                                 showSpinner = false;
                               });
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, RegistrationScreen.id);
                             }
                           } catch (e) {
@@ -149,16 +151,21 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: widgetBoxDec,
-                          child: Text(
-                            "Register",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
+                        child: Hero(
+                          tag: 'registerBtn',
+                          child: Container(
+                            decoration: widgetBoxDec,
+                            child: Text(
+                              "Register",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
                                 fontSize: 50,
                                 color: KContainerColour,
+                                decoration: TextDecoration.none,
                                 fontFamily: "WorkSans",
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),

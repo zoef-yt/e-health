@@ -1,10 +1,8 @@
-import 'package:e_health/Screens/RegistrationScreen.dart';
 import 'package:e_health/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_health/methods/ConstantsFile.dart';
 import 'package:e_health/widgetDart//widgetFile.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'userRegistrationScreen.dart';
 
 class welcomeScreen extends StatelessWidget {
@@ -14,14 +12,8 @@ class welcomeScreen extends StatelessWidget {
   }
 }
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeScreen extends StatelessWidget {
   static String id = "welcomeScreen";
-
-  @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,50 +63,61 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
               Spacer(),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 56, left: 50, right: 50),
-                  child: Material(
-                      elevation: 5.0,
+              Padding(
+                padding: const EdgeInsets.only(top: 56, left: 50, right: 50),
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
                       color: KBackGroundColor,
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, loginScreen.id);
-                        },
-                        child: Expanded(
-                          child: Text(
-                            "Login",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "WorkSans",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40,
-                            ),
+                      borderRadius: BorderRadius.circular(25.0)),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, loginScreen.id);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Hero(
+                        tag: 'loginBtn',
+                        child: const Text(
+                          "Login",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "WorkSans",
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
                           ),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, userRegistrationScreen.id);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: widgetBoxDec,
-                      child: Text(
-                        "Register",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 50,
-                            color: KContainerColour,
-                            fontFamily: "WorkSans",
-                            fontWeight: FontWeight.bold),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 6, left: 30, right: 30),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, userRegistrationScreen.id);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Hero(
+                        tag: 'registerBtn',
+                        child: Container(
+                          decoration: widgetBoxDec,
+                          child: Text(
+                            "Register",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 50,
+                                decoration: TextDecoration.none,
+                                color: KContainerColour,
+                                fontFamily: "WorkSans",
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ),
                   ),

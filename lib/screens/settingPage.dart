@@ -45,6 +45,7 @@ class _settingPageState extends State<settingPage> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               bottomNavigationBar: CurvedNavigationBar(
                 backgroundColor: KBackGroundColor,
                 animationDuration: Duration(milliseconds: 400),
@@ -59,12 +60,6 @@ class _settingPageState extends State<settingPage> {
                       () {
                         Navigator.of(context)
                             .pushReplacementNamed(MainHomePage.id);
-
-                        // Navigator.popUntil(
-                        //     context, ModalRoute.withName(MainHomePage.id));
-                        // while (Navigator.canPop(context)) {
-                        //   Navigator.pop(context);
-                        // }
                       },
                     );
                   }
@@ -126,17 +121,17 @@ class _settingPageState extends State<settingPage> {
                             ),
                           ),
                           Spacer(),
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.0),
-                                child: Material(
-                                  elevation: 5.0,
-                                  color: KBackGroundColor,
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  child: MaterialButton(
-                                    onPressed: () {
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: Material(
+                                elevation: 5.0,
+                                color: KBackGroundColor,
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    if (tempName != null) {
                                       setState(() {
                                         if (tempName != null) {
                                           firestoreInstance
@@ -148,17 +143,17 @@ class _settingPageState extends State<settingPage> {
                                           );
                                         }
                                       });
-                                    },
-                                    minWidth: 200.0,
-                                    height: 42.0,
-                                    child: Text(
-                                      "Done",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "WorkSans",
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
+                                    }
+                                  },
+                                  minWidth: 200.0,
+                                  height: 42.0,
+                                  child: Text(
+                                    "Done",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "WorkSans",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
                                   ),
                                 ),
                               ),

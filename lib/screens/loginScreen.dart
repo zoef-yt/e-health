@@ -23,6 +23,7 @@ class _loginScreenState extends State<loginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -146,43 +147,45 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
                 Spacer(),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 56, left: 50, right: 50, bottom: 10),
-                    child: Material(
-                        elevation: 5.0,
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 56, left: 50, right: 50, bottom: 10),
+                  child: Container(
+                      decoration: BoxDecoration(
                         color: KBackGroundColor,
                         borderRadius: BorderRadius.circular(30.0),
-                        child: InkWell(
-                          onTap: () async {
-                            if (email != null && password != null) {
-                              try {
-                                setState(() {
-                                  showSpinner = true;
-                                });
-                                final user =
-                                    await _auth.signInWithEmailAndPassword(
-                                        email: email, password: password);
-                                if (user != null) {
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                  Navigator.pushNamed(context, MainHomePage.id);
-                                }
-                              } catch (e) {
-                                showMyDialog(context, e);
+                      ),
+                      child: InkWell(
+                        onTap: () async {
+                          if (email != null && password != null) {
+                            try {
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              final user =
+                                  await _auth.signInWithEmailAndPassword(
+                                      email: email, password: password);
+                              if (user != null) {
                                 setState(() {
                                   showSpinner = false;
                                 });
+                                Navigator.pushNamed(context, MainHomePage.id);
                               }
-                            } else {
-                              showMyDialog(context,
-                                  "Email and password cannot be empty");
+                            } catch (e) {
+                              showMyDialog(context, e);
+                              setState(() {
+                                showSpinner = false;
+                              });
                             }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          } else {
+                            showMyDialog(
+                                context, "Email and password cannot be empty");
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Hero(
+                            tag: 'loginBtn',
                             child: Text(
                               "Login",
                               textAlign: TextAlign.center,
@@ -190,12 +193,13 @@ class _loginScreenState extends State<loginScreen> {
                                 color: Colors.white,
                                 fontFamily: "WorkSans",
                                 fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.none,
                                 fontSize: 40,
                               ),
                             ),
                           ),
-                        )),
-                  ),
+                        ),
+                      )),
                 ),
               ],
             ),

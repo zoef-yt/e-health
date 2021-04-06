@@ -102,21 +102,13 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
               onTap: (index) {
                 if (index == 0) {
                   Future.delayed(Duration(milliseconds: 250), () {
-                    Navigator.pushNamed(context, settingPage.id);
+                    Navigator.pushReplacementNamed(context, settingPage.id);
                   });
                 }
                 if (index == 1) {
                   Navigator.of(context).pushReplacementNamed(MainHomePage.id);
-
-                  // Future.delayed(Duration(milliseconds: 250), () {
-                  //   Navigator.popUntil(
-                  //       context, ModalRoute.withName(MainHomePage.id));
-                  // });
-                  // Navigator.pushNamed(context, MainHomePage.id);
                 }
-                if (index == 2) {
-                  print("tapped 0");
-                }
+                if (index == 2) {}
               },
               items: <Widget>[
                 Icon(Icons.face_rounded, size: 30, color: KwidgetColor),
@@ -170,34 +162,6 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                         ),
                       ),
                     ),
-                    // Align(
-                    //   alignment: Alignment.bottomCenter,
-                    //   child: Padding(
-                    //     padding: EdgeInsets.symmetric(vertical: 16.0),
-                    //     child: Material(
-                    //       elevation: 5.0,
-                    //       color: KBackGroundColor,
-                    //       borderRadius: BorderRadius.circular(30.0),
-                    //       child: MaterialButton(
-                    //         onPressed: () {
-                    //           setState(() {
-                    //             Navigator.pop(context);
-                    //           });
-                    //         },
-                    //         minWidth: 200.0,
-                    //         height: 42.0,
-                    //         child: Text(
-                    //           "DONE",
-                    //           style: TextStyle(
-                    //               color: Colors.white,
-                    //               fontFamily: "WorkSans",
-                    //               fontWeight: FontWeight.bold,
-                    //               fontSize: 20),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -276,7 +240,7 @@ class timelineWidget extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "Your Intake $intake",
+                "Your Intake $intake 🍏",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
@@ -287,7 +251,7 @@ class timelineWidget extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "You Burned $burned",
+                "You Burned $burned 🏋️",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
