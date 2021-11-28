@@ -1,6 +1,6 @@
 # E-health
 
-(Final year project).
+(Final year flutter project).
 # An application to keep track of your everyday calorie intake and workout. Diet and workout plan are determined based on your BMI.
 
 UI sample Images
